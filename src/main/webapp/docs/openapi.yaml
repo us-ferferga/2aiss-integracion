@@ -1,0 +1,575 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: >-
+    Esta API facilita al usuario encontrar series y películas originales de
+    Netflix
+  version: 1.0.0
+  title: NetflixOriginals
+tags:
+  - name: movies
+    description: Películas originales de Netflix
+  - name: series
+    description: Series originales de Netflix
+paths:
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Obtener las películas
+      description: Obtiene todas las peliculas disponibles en la base de datos.
+      operationId: getMovies
+      parameters:
+        - name: sortBy
+          in: query
+          description: Resultados ordenados por título, estreno, tiempo de duracion, genero o lenguaje
+          required: false
+          schema:
+            type: string
+            enum:
+              - title
+              - '-title'
+              - premiere
+              - '-premiere'
+              - runtime
+              - '-runtime'
+        - name: q
+          in: query
+          description: Filtra las peliculas según el parámetro dado
+          required: false
+          schema:
+            type: string
+            enum:
+              - title
+              - '-title'
+              - premiere
+              - '-premiere'
+              - runtime
+              - '-runtime'
+        - name: limit
+          in: query
+          description: Numero máximo de resultados
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: offset
+          in: query
+          description: Paginación del resultado
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: hasLanguages
+          in: query
+          description: Filtración por lenguaje
+          required: false
+          schema:
+            $ref: '#/components/schemas/Idiomas'
+        - name: hasGenres
+          in: query
+          description: Filtración por genero
+          required: false
+          schema:
+            $ref: '#/components/schemas/Genero'
+      responses:
+        '200':
+          description: Busca los resultados en base al criterio dado por el cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+              example:
+                title: Enter the Anime
+                genre:
+                  - Documentary
+                languages:
+                  - English
+                  - Japanese
+                premiere: 05/08/2019
+                runtime: 58
+                imdbScore: 25
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - movies
+      summary: Añadir película
+      description: Añade una nueva película a la base de datos
+      operationId: postMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+            example:
+              title: A Través de mi Ventana
+              genre:
+                - Romance drama
+              languages:
+                - English
+                - Spanish
+              premiere: 04/02/2022
+              runtime: 113
+              imdbScore: 52
+        description: Pelicula a crear
+        required: true
+      responses:
+        '201':
+          description: Movie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+              example:
+                title: A Través de mi Ventana
+                genre:
+                  - Romance 
+                  - Drama
+                languages:
+                  - English
+                  - Spanish
+                premiere: 04/02/2022
+                runtime: 113
+                imdbScore: 52
+        '400':
+          description: Bad request
+  /movies/{id}:
+    put:
+      tags:
+        - movies
+      summary: Actualizar película
+      description: Actualiza una película ya existente en la base de datos
+      operationId: updateMovie
+      parameters:
+        - name: id
+          in: path
+          description: Id de la pelicula
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+            example:
+              title: Enter the Anime
+              genre:
+                - Documentary
+              languages:
+                - English
+                - Japanese
+              premiere: 05/08/2019
+              runtime: 58
+              imdbScore: 36
+      responses:
+        '204':
+          description: Movie updated
+        '400':
+          description: Bad request
+        '404':
+          description: Movie not found
+    get:
+      tags:
+        - movies
+      summary: Obtener una película
+      description: Obtiene una pelicula en concreto según el parámetro dado
+      operationId: getMovie
+      parameters:
+        - name: id
+          in: path
+          description: Id de la pelicula
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Movie found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+              example:
+                title: Enter the Anime
+                genre:
+                  - Documentary
+                languages:
+                  - English
+                  - Japanese
+                premiere: 05/08/2019
+                runtime: 58
+                imdbScore: 25
+        '404':
+          description: Movie not found
+    delete:
+      tags:
+        - movies
+      summary: Eliminar película
+      description: Elimina una película ya existente en la base de datos
+      operationId: deleteMovie
+      parameters:
+        - name: id
+          in: path
+          description: Id de la película a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Movie deleted
+        '404':
+          description: Movie not found
+  /series:
+    get:
+      tags:
+        - series
+      summary: Obtener las series
+      description: Obtiene todas las series disponibles en la base de datos.
+      operationId: getSeries
+      parameters:
+        - name: sortBy
+          in: query
+          description: Redultados ordenados por título o estreno
+          required: false
+          schema:
+            type: string
+            enum:
+              - title
+              - '-title'
+              - premiere
+              - '-premiere'
+        - name: q
+          in: query
+          description: Filtra las series según el parámetro dado
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Numero máximo de resultados
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: offset
+          in: query
+          description: Paginación del resultado
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: hasGenres
+          in: query
+          description: Filtración por genero
+          required: false
+          schema:
+            $ref: '#/components/schemas/Genero'
+      responses:
+        '200':
+          description: Busca los resultados en base al criterio dado por el cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serie'
+              example:
+                title: Stranger Things
+                genre:
+                  - Science
+                  - Fiction
+                  - Horror
+                premiere: July 15, 2016
+                numEpisodes: 25
+                numSeasons: 3
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - series
+      summary: Añadir serie
+      description: Añade una nueva serie a la base de datos
+      operationId: postSeries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serie'
+            example:
+              title: Clark
+              genre: 
+                -Crime 
+                -Drama
+              premiere: May 5, 2022
+              numEpisodes: 6
+              numSeasons: 1
+        description: Serie a crear
+        required: true
+      responses:
+        '201':
+          description: Series created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serie'
+              example:
+                title: Clark
+                genre:
+                  - Crime
+                  - Drama
+                premiere: May 5, 2022
+                numEpisodes: 6
+                numSeasons: 1
+        '400':
+          description: Bad request
+  /series/{id}:
+    put:
+      tags:
+        - series
+      summary: Actualizar serie
+      description: Actualiza una serie ya existente en la base de datos
+      operationId: updateSeries
+      parameters:
+        - name: id
+          in: path
+          description: Id de la serie
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serie'
+            example:
+              title: Stranger Things
+              genre:
+                - Science
+                - Fiction
+                - Horror
+              premiere: July 15, 2016
+              numEpisodes: 32
+              numSeasons: 4
+      responses:
+        '204':
+          description: Series updated
+        '400':
+          description: Bad request
+        '404':
+          description: Series not found
+    get:
+      tags:
+        - series
+      summary: Obtener una serie
+      description: Obtiene una serie en concreto según el parámetro dado
+      operationId: getSeriesById
+      parameters:
+        - name: id
+          in: path
+          description: Id de la serie
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Series found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Serie'
+              example:
+                title: Stranger Things
+                genre:
+                  - Science
+                  - Fiction
+                  - Horror
+                premiere: July 15, 2016
+                numEpisodes: 25
+                numSeasons: 3
+        '404':
+          description: Series not found
+    delete:
+      tags:
+        - series
+      summary: Eliminar serie
+      description: Elimina una serie ya existente en la base de datos
+      operationId: deleteSeries
+      parameters:
+        - name: id
+          in: path
+          description: Id de la serie a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Series deleted
+        '404':
+          description: Series not found
+
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        genre:
+          allOf:
+            - $ref: '#/components/schemas/Genero'
+        languages:
+          allOf:
+            - $ref: '#/components/schemas/Idiomas'
+        premiere:
+          type: string
+        runtime:
+          type: integer
+        imdbScore:
+          type: number
+    Serie:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        genre:
+          allOf:
+            - $ref: '#/components/schemas/Genero'
+        premiere:
+          type: string
+        numEpisodes:
+          type: integer
+        numSeasons:
+          type: integer
+    Genero:
+      type: string
+      enum:
+        - Documentary
+        - Thriller
+        - Science
+        - Fiction
+        - Drama
+        - Horror
+        - Action
+        - Comedy
+        - Heist
+        - Film
+        - Romantic
+        - Anthology
+        - Political
+        - Romance
+        - Family
+        - Teen
+        - Comedy_drama
+        - Christmas
+        - Musical
+        - Adventure
+        - Variety
+        - Show
+        - Supernatural
+        - Teenage
+        - Crime
+        - Psychological
+        - Black
+        - Christian
+        - Dark
+        - Sports
+        - Mystery
+        - Dance
+        - Stop
+        - Motion
+        - Urban
+        - Fantasy
+        - Concert
+        - War
+        - Prank
+        - Spy
+        - Animated
+        - Mentalism
+        - Special
+        - Historical
+        - Western
+        - Superhero
+        - Anime
+        - Short
+        - Animation
+        - Aftershow
+        - Interview
+        - Biopic
+        - Mockumentary
+        - Satire
+        - Zombie
+        - Holiday
+        - One
+        - Man
+        - Musicial
+        - Hidden
+        - Camera
+        - Biographical
+        - Epic
+        - Coming
+        - Of
+        - Age
+        - Making
+        - Police
+        - Procedural
+        - Detective
+        - Sketch
+        - Sitcom
+        - Medieval
+        - Suspense
+        - Workplace
+        - Children
+        - Disaster
+        - Period
+        - Awaiting
+        - Release
+        - Dramedy
+        - Travel
+        - Culinary
+        - Art
+        - Nature
+        - Martial
+        - Comic
+        - Satirical
+    Idiomas:
+      type: string
+      enum:
+        - English
+        - Spanish
+        - Portuguese
+        - Tamil
+        - Hindi
+        - Marathi
+        - Japanese
+        - Italian
+        - Turkish
+        - Akan
+        - Korean
+        - Russian
+        - Mandarin
+        - Arabic
+        - Indonesian
+        - Malay
+        - Dutch
+        - French
+        - Filipino
+        - German
+        - Polish
+        - Norwegian
+        - Ukranian
+        - Thai
+        - Swedish
+        - Basque
+        - Catalan
+        - Taiwanese
+        - Thia
+        - Georgian
+        - Bengali
+        - Khmer
