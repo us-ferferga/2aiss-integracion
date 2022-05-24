@@ -1,5 +1,9 @@
 openapi: 3.0.0
-servers: []
+servers: 
+  - url: https://netflixoriginals.nw.r.appspot.com/api
+    description: Servidor en Google App Engine
+  - url: http://127.0.0.1:8089/api
+    description: Servidor de desarrollo local
 info:
   description: >-
     Esta API facilita al usuario encontrar series y películas originales de
