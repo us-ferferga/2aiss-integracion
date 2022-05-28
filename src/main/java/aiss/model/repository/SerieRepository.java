@@ -26,9 +26,7 @@ public class SerieRepository implements ISerieRepository {
 	}
 
 	public void init() {
-		File currentPath = new File(System.getProperty("user.dir"));
-		File filePath = new File(
-				currentPath.getParentFile().getParentFile().getAbsolutePath() + "\\data\\netflixSeries.csv");
+		File filePath = new File("WEB-INF/data/netflixSeries.csv");
 		List<String> lines = Helper.leerLineas(filePath.toString());
 		for (int i = 1; i < lines.size(); i++) {
 			String s = lines.get(i);

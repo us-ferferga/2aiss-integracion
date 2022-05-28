@@ -34,9 +34,7 @@ public class MovieRepository implements IMovieRepository {
 	}
 
 	public void init() {
-		File currentPath = new File(System.getProperty("user.dir"));
-		File filePath = new File(
-				currentPath.getParentFile().getParentFile().getAbsolutePath() + "\\data\\NetflixOriginals.csv");
+		File filePath = new File("WEB-INF/data/NetflixOriginals.csv");
 		List<String> lines = Helper.leerLineas(filePath.toString());
 		for (int i = 1; i < lines.size(); i++) {
 			String s = lines.get(i);
