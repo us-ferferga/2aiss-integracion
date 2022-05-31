@@ -43,13 +43,6 @@ paths:
           required: false
           schema:
             type: string
-            enum:
-              - title
-              - '-title'
-              - premiere
-              - '-premiere'
-              - runtime
-              - '-runtime'
         - name: limit
           in: query
           description: Numero máximo de resultados
@@ -87,7 +80,7 @@ paths:
                 $ref: '#/components/schemas/Movie'
               example:
                 title: Enter the Anime
-                genre:
+                genres:
                   - Documentary
                 languages:
                   - English
@@ -110,7 +103,7 @@ paths:
               $ref: '#/components/schemas/Movie'
             example:
               title: A Través de mi Ventana
-              genre:
+              genres:
                 - Romance drama
               languages:
                 - English
@@ -129,7 +122,7 @@ paths:
                 $ref: '#/components/schemas/Movie'
               example:
                 title: A Través de mi Ventana
-                genre:
+                genres:
                   - Romance 
                   - Drama
                 languages:
@@ -161,7 +154,7 @@ paths:
               $ref: '#/components/schemas/Movie'
             example:
               title: Enter the Anime
-              genre:
+              genres:
                 - Documentary
               languages:
                 - English
@@ -198,7 +191,7 @@ paths:
                 $ref: '#/components/schemas/Movie'
               example:
                 title: Enter the Anime
-                genre:
+                genres:
                   - Documentary
                 languages:
                   - English
@@ -236,7 +229,7 @@ paths:
       parameters:
         - name: sortBy
           in: query
-          description: Redultados ordenados por título o estreno
+          description: Resultados ordenados por título o estreno
           required: false
           schema:
             type: string
@@ -282,7 +275,7 @@ paths:
                 $ref: '#/components/schemas/Serie'
               example:
                 title: Stranger Things
-                genre:
+                genres:
                   - Science
                   - Fiction
                   - Horror
@@ -304,7 +297,7 @@ paths:
               $ref: '#/components/schemas/Serie'
             example:
               title: Clark
-              genre: 
+              genres: 
                 -Crime 
                 -Drama
               premiere: May 5, 2022
@@ -321,7 +314,7 @@ paths:
                 $ref: '#/components/schemas/Serie'
               example:
                 title: Clark
-                genre:
+                genres:
                   - Crime
                   - Drama
                 premiere: May 5, 2022
@@ -350,7 +343,7 @@ paths:
               $ref: '#/components/schemas/Serie'
             example:
               title: Stranger Things
-              genre:
+              genres:
                 - Science
                 - Fiction
                 - Horror
@@ -386,7 +379,7 @@ paths:
                 $ref: '#/components/schemas/Serie'
               example:
                 title: Stranger Things
-                genre:
+                genres:
                   - Science
                   - Fiction
                   - Horror
@@ -423,7 +416,7 @@ components:
           type: string
         title:
           type: string
-        genre:
+        genres:
           allOf:
             - $ref: '#/components/schemas/Genero'
         languages:
@@ -442,7 +435,7 @@ components:
           type: string
         title:
           type: string
-        genre:
+        genres:
           allOf:
             - $ref: '#/components/schemas/Genero'
         premiere:
